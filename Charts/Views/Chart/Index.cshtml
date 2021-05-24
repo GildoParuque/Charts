@@ -1,0 +1,65 @@
+﻿<div class="card mb-3">
+    <div class="card-header bg-warning text-dark">
+        <i class="fa fa">
+            Sales Order by Zone
+        </i>
+    </div>
+    <div class="card-body">
+        <canvas id="chart1" class="chartjs-render-monitor" style="display: block; "></canvas>
+    </div>
+    <div class="card-footer small text-muted" style="background-color: #ffd6cc;">Updated yesterday at 11:59 PM</div>
+</div>
+
+@section scripts{
+    @*<script scr="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js" type="text/javascript"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.1/chart.min.js" integrity="sha512-tOcHADT+YGCQqH7YO99uJdko6L8Qk5oudLN6sCeI4BQnpENq6riR6x9Im+SGzhXpgooKBRkPsget4EOoH5jNCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @*<script scr="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0-rc.1/chartjs-plugin-datalabels.min.js" integrity="sha512-+UYTD5L/bU1sgAfWA0ELK5RlQ811q8wZIocqI7+K0Lhh8yVdIoAMEs96wJAIbgFvzynPm36ZCXtkydxu1cs27w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+    <script>
+        $(document).ready(setup);
+        function setup() {
+            var option = {
+                type: "GET",
+                url: "/chart/data",
+                contentType: "application/json;charser=utf-8",
+                datatype: "json",
+                success: data_arrived
+            };
+            $.ajax(option);
+        }
+
+        function data_arrived(data) {
+            console.log(data);
+            var x_data = data[0];
+            var y_data = data[1];
+
+
+            var graph_data = {
+                label: x_data,
+                datasets: [
+                    {
+                        label: 'test',
+                        data: y_data,
+                        fill: true,
+                        backgroundColor: ['rgba(255,0,0,0.2)', 'rgba(0,255,0,0.2)', 'rgba(0,0,255,0.2)'],
+                        borderWidth: 2
+                    }
+                ]
+            };
+            var panel1 = $('#chart1').get(0).getContext("2d");
+            var chart1 = new Chart(
+                panel1,
+                {
+                    type: 'pie',
+                    data: graph_data,
+                    options: {
+                        maintainAspectRatio: false
+                    }
+                }
+            );
+        }
+    </script>
+}

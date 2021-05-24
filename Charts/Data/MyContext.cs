@@ -15,7 +15,7 @@ namespace Charts.Data
 
         }
 
-        public DbSet<SalesOrder> salesOrders { get; set; }
+        public DbSet<SalesOrder> SalesOrders { get; set; }
     }
 
 }
